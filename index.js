@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
 // Basic Configuration
-const port = process.env.PORT || 6200;
+const port = process.env.PORT || 6000;
 
 mongoose
   .connect(
@@ -42,7 +42,7 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.post("/api/shorturl", function (req, res) {
-  dns.lookup(req.body.url.replace(/http:\/\/|https:\/\//,''), (err, address, family) => {
+  dns.lookup(req.body.url.replace(/https:\/\/www.|http:\/\/www./g, ''), (err, address, family) => {
     if (err) {
       res.json({ error: "invalid URL" });
     } else {
