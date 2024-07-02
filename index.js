@@ -1,4 +1,3 @@
-
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -6,13 +5,12 @@ const dns = require("dns");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
-
-
 // Basic Configuration
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 6200;
 
 mongoose
-  .connect("mongodb+srv://bolajiakanji21:Unde5085%402@bolaji.l6yuhxc.mongodb.net/urlShortener?retryWrites=true&w=majority&appName=Bolaji"
+  .connect(
+    "mongodb+srv://bolajiakanji21:Unde5085%402@bolaji.l6yuhxc.mongodb.net/urlShortener?retryWrites=true&w=majority&appName=Bolaji"
   )
   .then(() => console.log("connected to mongodb"))
   .catch((err) => console.error("could not connect to mongodb"));
@@ -24,7 +22,7 @@ var urlSchema = new mongoose.Schema({
   },
   url: {
     type: String,
-    require:true,
+    require: true,
   },
 });
 
@@ -69,15 +67,22 @@ app.post("/api/shorturl", function (req, res) {
 });
 
 app.get("/api/shorturl/:number", function (req, res) {
-  const _number = parseInt(req.params.number)
-  console.log('the type of number is'+ typeof _number)
-  UrlModel.find({ id: _number }).then((url) => {
-    console.log(url)
-    if (req.params.number) return res.redirect('https://'+url[0]['url'])
-    res.send(null)
- 
-       
-  });
+  if (req.params.number) {
+
+    const _number = parseInt(req.params.number);
+    if (_number) {
+    console.log("the type of number is" + typeof _number);
+    UrlModel.find({ id: _number }).then((url) => {
+      console.log(url);
+      return res.redirect("https://" + url[0]["url"]);
+    });
+    } else {
+      res.send('invalid route')
+      return;
+  }} else {
+    res.send('invalid route')
+    return;
+  }
 });
 
 app.listen(port, function () {
