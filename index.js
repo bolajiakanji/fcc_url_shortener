@@ -5,9 +5,8 @@ const app = express();
 const dns = require("dns");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const config = require("config");
-const { type } = require("os");
-const { stringify } = require("querystring");
+
+
 
 // Basic Configuration
 const port = process.env.PORT || 3000;
@@ -31,7 +30,7 @@ var urlSchema = new mongoose.Schema({
 
 const UrlModel = mongoose.model("url", urlSchema);
 
-app.use(cors({ optionSuccessStatus: 200 }));
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/public", express.static(`${process.cwd()}/public`));
 
