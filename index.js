@@ -74,7 +74,7 @@ app.get("/api/shorturl/:number", function (req, res) {
   UrlModel.find({ id: _number }).then((url) => {
     console.log(url)
     if (req.params.number) return res.redirect('https://'+url[0]['url'])
-   return res.send(null)
+    res.send(null)
  
        
   });
