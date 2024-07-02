@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
 // Basic Configuration
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 3000;
 
 mongoose
   .connect(
@@ -77,7 +77,7 @@ app.get("/api/shorturl/:number", function (req, res) {
       return res.redirect(url[0]["url"]);
     });
     } else {
-      res.send('invalid rout')
+      res.send('invalid route')
       return;
   }} else {
     res.send('invalid route')
