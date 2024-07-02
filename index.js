@@ -42,7 +42,7 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.post("/api/shorturl", function (req, res) {
-  dns.lookup(req.body.url, (err, address, family) => {
+  dns.lookup(req.body.url.replace(/http:\/\/|https:\/\//,''), (err, address, family) => {
     if (err) {
       res.json({ error: "invalid URL" });
     } else {
@@ -74,7 +74,7 @@ app.get("/api/shorturl/:number", function (req, res) {
     console.log("the type of number is" + typeof _number);
     UrlModel.find({ id: _number }).then((url) => {
       console.log(url);
-      return res.redirect("https://" + url[0]["url"]);
+      return res.redirect(url[0]["url"]);
     });
     } else {
       res.send('invalid route')
