@@ -31,7 +31,7 @@ var urlSchema = new mongoose.Schema({
 
 const UrlModel = mongoose.model("url", urlSchema);
 
-app.use(cors());
+app.use(cors({ optionSuccessStatus: 200 }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/public", express.static(`${process.cwd()}/public`));
 
@@ -74,8 +74,8 @@ app.get("/api/shorturl/:number", function (req, res) {
   console.log('the type of number is'+ typeof _number)
   UrlModel.find({ id: _number }).then((url) => {
     console.log(url)
-    if (req.params.number) res.redirect('https://'+url[0]['url'])
-    res.send(null)
+    if (req.params.number) return res.redirect('https://'+url[0]['url'])
+   return res.send(null)
  
        
   });
