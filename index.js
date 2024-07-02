@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
 // Basic Configuration
-const port = process.env.PORT || 6000;
+const port = process.env.PORT || 9000;
 
 mongoose
   .connect(
@@ -42,20 +42,20 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.post("/api/shorturl", function (req, res) {
-  dns.lookup(req.body.url.replace(/https:\/\/www.|http:\/\/www./g, ''), (err, address, family) => {
+  dns.lookup(req.body.url.replace(), (err, address, family) => {
     if (err) {
       res.json({ error: "invalid URL" });
     } else {
       UrlModel.find().then((data) => {
         new UrlModel({
           id: parseInt(data.length + 1),
-          url: req.body.url,
+          url: 'https://'+req.body.url,
         })
           .save()
-          .then(() => {
+          .then((savedData) => {
             res.json({
-              original_url: req.body.url,
-              short_url: data.length + 1,
+              original_url: savedData.url,
+              short_url: savedData.id,
             });
           })
           .catch((err) => {
@@ -77,7 +77,7 @@ app.get("/api/shorturl/:number", function (req, res) {
       return res.redirect(url[0]["url"]);
     });
     } else {
-      res.send('invalid route')
+      res.send('invalid rout')
       return;
   }} else {
     res.send('invalid route')
