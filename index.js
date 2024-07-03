@@ -28,7 +28,7 @@ var urlSchema = new mongoose.Schema({
 
 const UrlModel = mongoose.model("url", urlSchema);
 
-app.use(cors());
+app.use(cors({ optionSuccessStatus: 200 }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/public", express.static(`${process.cwd()}/public`));
 
@@ -42,10 +42,13 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.post("/api/shorturl", function (req, res) {
+  console.log(req.body)
   dns.lookup(
     req.body.url.replace(/https:\/\/|http:\/\//, ""),
     (err, address, family) => {
       if (err) {
+        console.log('here')
+        
         return res.json({ error: "invalid URL" });
       }
 
@@ -56,10 +59,11 @@ app.post("/api/shorturl", function (req, res) {
         })
           .save()
           .then((savedData) => {
-           return res.json({
+            console.log(savedData.url)
+           console.log('yjshat' + res.json({
               original_url: savedData.url,
               short_url: savedData.id,
-            });
+            }));
           })
           .catch((err) => {
              res.json(err);
