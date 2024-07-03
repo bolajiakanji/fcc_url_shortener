@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 
 mongoose
   .connect(
-    "mongodb+srv://bolajiakanji21:Unde5085%402@bolaji.l6yuhxc.mongodb.net/urlShortener?retryWrites=true&w=majority&appName=Bolaji"
+    "mongodb+srv://bolajiakanji21:Unde5085%402@bolaji.l6yuhxc.mongodb.net/fcc-urlShortener?retryWrites=true&w=majority&appName=Bolaji"
   )
   .then(() => console.log("connected to mongodb"))
   .catch((err) => console.error("could not connect to mongodb"));
@@ -68,22 +68,39 @@ app.post("/api/shorturl", function (req, res) {
   );
 ;
 
-app.get("/api/shorturl/:short_url", function (req, res) {
-  if (req.params.number) {
+app.get("/api/shorturl/:short", async function (req, res) {
+  if (req.params.short) {
+    console.log(req.params)
 
-    const _number = parseInt(req.params.short_url);
+    const _number = parseInt(req.params.short)
+    console.log(_number)
     if (_number) {
-    console.log("the type of number is" + typeof _number);
-    UrlModel.find({ id: _number }).then((url) => {
-      console.log(url);
-      return res.redirect(url[0]["url"]);
-    });
-    } else {
-      res.send('invalid route')
-      return;
-  }} else {
-    res.send('invalid route')
-    return;
+      try {
+        const ddata = await UrlModel.find({ id: _number })
+        console.log(ddata);
+    
+        res.redirect(ddata[0]['url'])
+        return
+      }
+      catch (err) { res.send(err) }
+    }
+    
+    //   const _number = parseInt(req.params.short);
+    //   if (_number) {
+    //   console.log("the type of number is" + typeof _number);
+    //   UrlModel.find({ id: _number }).then((url) => {
+    //     console.log(url);
+    //     return res.redirect(url[0]["url"]);
+    //   });
+    //   } else {
+    //     res.send('invalid rout')
+    //     return;
+    // }} else {
+    //   res.send('invalid route')
+    //   return;
+    // }
+  } else {
+    res.json({invalid:route})
   }
 });
 
