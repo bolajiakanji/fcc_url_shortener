@@ -68,10 +68,10 @@ app.post("/api/shorturl", function (req, res) {
   );
 ;
 
-app.get("/api/shorturl/:number", function (req, res) {
+app.get("/api/shorturl/:short_url", function (req, res) {
   if (req.params.number) {
 
-    const _number = parseInt(req.params.number);
+    const _number = parseInt(req.params.short_url);
     if (_number) {
     console.log("the type of number is" + typeof _number);
     UrlModel.find({ id: _number }).then((url) => {
