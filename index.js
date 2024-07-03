@@ -68,11 +68,11 @@ app.post("/api/shorturl", function (req, res) {
   );
 ;
 
-app.get("/api/shorturl/:short", async function (req, res) {
-  if (req.params.short) {
+app.get("/api/shorturl/:short_url", async function (req, res) {
+  if (req.params.short_url) {
     console.log(req.params)
 
-    const _number = parseInt(req.params.short)
+    const _number = parseInt(req.params.short_url)
     console.log(_number)
     if (_number) {
       try {
