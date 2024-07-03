@@ -41,7 +41,7 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
 
-app.post("/api/shorturl", function (req, res) {
+app.post("/api/shorturl/new", function (req, res) {
   dns.lookup(req.body.url.replace(/https:\/\/www.|http:\/\/www./, ''), (err, address, family) => {
     if (err) {
       res.json({ error: "invalid URL" });
