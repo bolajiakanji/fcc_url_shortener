@@ -42,29 +42,31 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.post("/api/shorturl", function (req, res) {
-  dns.lookup(req.body.url.replace(), (err, address, family) => {
+  dns.lookup(req.body.url.replace(/https:\/\/www.|http:\/\/www./, ''), (err, address, family) => {
     if (err) {
       res.json({ error: "invalid URL" });
-    } else {
-      UrlModel.find().then((data) => {
-        new UrlModel({
-          id: parseInt(data.length + 1),
-          url: 'https://'+req.body.url,
-        })
-          .save()
-          .then((savedData) => {
-            res.json({
-              original_url: savedData.url,
-              short_url: savedData.id,
-            });
-          })
-          .catch((err) => {
-            res.json(err);
-          });
-      });
+      return;
     }
-  });
-});
+  
+  UrlModel.find().then((data) => {
+    new UrlModel({
+      id: parseInt(data.length + 1),
+      url: req.body.url,
+    })
+      .save()
+      .then((savedData) => {
+        res.json({
+          original_url: savedData.url,
+          short_url: savedData.id,
+        });
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  })  });
+    }
+  );
+;
 
 app.get("/api/shorturl/:number", function (req, res) {
   if (req.params.number) {
