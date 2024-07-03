@@ -72,7 +72,7 @@ app.post("/api/shorturl", function (req, res) {
     }
   );
 });
-app.get("/api/shorturl/:short_url", async function (req, res) {
+app.get("/api/shorturl/:short_url",'cors()', async function (req, res) {
   if (req.params.short_url) {
     console.log(req.params);
 
