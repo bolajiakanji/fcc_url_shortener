@@ -33,58 +33,58 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/public", express.static(`${process.cwd()}/public`));
 
 app.get("/", function (req, res) {
-  res.sendFile(process.cwd() + "/views/index.html");
+  return res.sendFile(process.cwd() + "/views/index.html");
 });
 
 // Your first API endpoint
 app.get("/api/hello", function (req, res) {
-  res.json({ greeting: "hello API" });
+  return res.json({ greeting: "hello API" });
 });
 
-app.post("/api/shorturl/new", function (req, res) {
-  dns.lookup(req.body.url.replace(/https:\/\/www.|http:\/\/www./, ''), (err, address, family) => {
-    if (err) {
-      res.json({ error: "invalid URL" });
-      return;
-    }
-  
-  UrlModel.find().then((data) => {
-    new UrlModel({
-      id: parseInt(data.length + 1),
-      url: req.body.url,
-    })
-      .save()
-      .then((savedData) => {
-        res.json({
-          original_url: savedData.url,
-          short_url: savedData.id,
-        });
-      })
-      .catch((err) => {
-        res.json(err);
+app.post("/api/shorturl", function (req, res) {
+  dns.lookup(
+    req.body.url.replace(/https:\/\/|http:\/\//, ""),
+    (err, address, family) => {
+      if (err) {
+        return res.json({ error: "invalid URL" });
+      }
+
+      UrlModel.find().then((data) => {
+        new UrlModel({
+          id: parseInt(data.length + 1),
+          url: req.body.url,
+        })
+          .save()
+          .then((savedData) => {
+           return res.json({
+              original_url: savedData.url,
+              short_url: savedData.id,
+            });
+          })
+          .catch((err) => {
+             res.json(err);
+          });
       });
-  })  });
     }
   );
-;
-
+});
 app.get("/api/shorturl/:short_url", async function (req, res) {
   if (req.params.short_url) {
-    console.log(req.params)
+    console.log(req.params);
 
-    const _number = parseInt(req.params.short_url)
-    console.log(_number)
+    const _number = parseInt(req.params.short_url);
+    console.log(_number);
     if (_number) {
       try {
-        const ddata = await UrlModel.find({ id: _number })
+        const ddata = await UrlModel.find({ id: _number });
         console.log(ddata);
-    
-        res.redirect(ddata[0]['url'])
-        return
+
+        return res.redirect(ddata[0]["url"]);
+      } catch (err) {
+        res.send(err);
       }
-      catch (err) { res.send(err) }
     }
-    
+
     //   const _number = parseInt(req.params.short);
     //   if (_number) {
     //   console.log("the type of number is" + typeof _number);
@@ -100,7 +100,7 @@ app.get("/api/shorturl/:short_url", async function (req, res) {
     //   return;
     // }
   } else {
-    res.json({invalid:route})
+    res.json({ invalid: route });
   }
 });
 
