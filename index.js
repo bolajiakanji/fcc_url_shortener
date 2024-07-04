@@ -43,8 +43,9 @@ app.get("/api/hello", function (req, res) {
 
 app.post("/api/shorturl", function (req, res) {
   console.log(req.body.url + 'first')
-        
-      UrlModel.find().then((data) => {
+  if (!/^http/.test(req.body.url)) return res.json({ error: "invalid URL" });
+  
+   UrlModel.find().then((data) => {
         
         new UrlModel({
           id: parseInt(data.length + 1 || 1),
