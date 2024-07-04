@@ -43,19 +43,7 @@ app.get("/api/hello", function (req, res) {
 
 app.post("/api/shorturl", function (req, res) {
   console.log(req.body.url + 'first')
-  console.log(req.body.url.replace(/https:\/\/|http:\/\//, ""))
-  let dnsregex = req.body.url.replace(/^https:\/\/|http:\/\/(.+?)\/?/,'$1')
-  console.log(dnsregex)
-  dns.lookup(dnsregex
-    ,
-  
-    (err, address, family) => {
-      if (err) {
-        console.log('here 6')
         
-        return res.json({ error: "invalid URL" });
-      }
-      console.log(req.body.url + 'bode.url1')
       UrlModel.find().then((data) => {
         
         new UrlModel({
@@ -76,7 +64,45 @@ app.post("/api/shorturl", function (req, res) {
       });
     }
   );
-});
+;
+
+// app.post("/api/shorturl", function (req, res) {
+//   console.log(req.body.url + 'first')
+//   console.log(req.body.url.replace(/https:\/\/|http:\/\//, ""))
+//   let dnsregex = req.body.url.replace(/^https:\/\/|http:\/\/(.+?)\/?/,'$1')
+//   console.log(dnsregex)
+//   dns.lookup(dnsregex
+//     ,
+  
+//     (err, address, family) => {
+//       if (err) {
+//         console.log('here 6')
+        
+//         return res.json({ error: "invalid URL" });
+//       }
+//       console.log(req.body.url + 'bode.url1')
+//       UrlModel.find().then((data) => {
+        
+//         new UrlModel({
+//           id: parseInt(data.length + 1 || 1),
+//           url: req.body.url,
+//         })
+//           .save()
+//           .then((savedData) => {
+//             console.log(savedData.url + 'saveddata1')
+//            console.log(res.json({
+//               original_url: savedData.url,
+//               short_url: savedData.id,
+//             }));
+//           })
+//           .catch((err) => {
+//              res.json(err);
+//           });
+//       });
+//     }
+//   );
+// });
+
 app.get("/api/shorturl/:short_url",async function (req, res) {
   if (req.params.short_url) {
     console.log(req.params.short_url +'mine' );
