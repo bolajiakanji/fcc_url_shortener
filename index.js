@@ -59,7 +59,7 @@ app.post("/api/shorturl", function (req, res) {
       UrlModel.find().then((data) => {
         
         new UrlModel({
-          id: parseInt(data.length + 1),
+          id: parseInt(data.length + 1 || 1),
           url: req.body.url,
         })
           .save()
