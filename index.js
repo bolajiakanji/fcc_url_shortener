@@ -44,7 +44,7 @@ app.get("/api/hello", function (req, res) {
 app.post("/api/shorturl", function (req, res) {
   console.log(req.body.url + 'first')
   console.log(req.body.url.replace(/https:\/\/|http:\/\//, ""))
-  let dnsregex = req.body.url.replace(/https:\/\/|http:\/\/(.+?)\/.*/,'$1')
+  let dnsregex = req.body.url.replace(/^https:\/\/|http:\/\/(.+?)\/?/,'$1')
   console.log(dnsregex)
   dns.lookup(dnsregex
     ,
